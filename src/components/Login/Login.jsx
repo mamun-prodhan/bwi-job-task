@@ -1,13 +1,16 @@
 import axios from "axios";
+import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState("");
 
   // login implement
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError("");
     const form = e.target;
     const username = form.username.value;
     const password = form.password.value;
@@ -23,7 +26,8 @@ const Login = () => {
       localStorage.setItem("token", token);
       navigate(location?.state ? location.state : "/");
     } catch (error) {
-      console.log("login error", error);
+      console.log("Login Error", error);
+      setLoginError("Email or Password is Wrong");
     }
   };
 
@@ -65,6 +69,11 @@ const Login = () => {
                 placeholder="Enter Password"
               />
             </div>
+            {loginError && (
+              <p className="text-red-600 font-semibold">
+                Email or Password is Wrong
+              </p>
+            )}
             <div className="mt-5">
               <button
                 type="submit"
