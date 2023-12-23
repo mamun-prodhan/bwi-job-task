@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
 
+  // login implement
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
     const username = form.username.value;
     const password = form.password.value;
     console.log("console in handle", username, password);
-    // get the token
+    // get auth token from api
     try {
       const res = await axios.post("https://dummyjson.com/auth/login", {
         username: username,

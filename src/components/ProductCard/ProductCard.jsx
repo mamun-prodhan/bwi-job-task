@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProductCard = ({ item, addToCart }) => {
   return (
     <div className="p-4 border rounded-lg">
