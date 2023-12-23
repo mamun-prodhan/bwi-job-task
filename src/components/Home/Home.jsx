@@ -7,7 +7,33 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [priceBar, setPriceBar] = useState(2000);
   const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState([]);
   // console.log("loading state", loading, "and products data", products.length);
+
+  // get stored cart from local storage
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || {
+      cartItems: [],
+    };
+    setCartItems(storedCart.cartItems);
+  }, []);
+
+  // add to cart
+  const addToCart = (product) => {
+    const updatedCart = [...cartItems, product];
+    setCartItems(updatedCart);
+    localStorage.setItem("cart", JSON.stringify({ cartItems: updatedCart }));
+  };
+
+  const calculateTotalAmount = () => {
+    return cartItems.reduce((total, item) => total + item.price, 0);
+  };
+
+  // clear cart
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart");
+  };
 
   // fetching data from api
   useEffect(() => {
@@ -62,6 +88,18 @@ const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto mt-20">
+      {/* card count div */}
+      <div>
+        <p>Cart Count: {cartItems.length}</p>
+        <ul>
+          {cartItems.map((item, index) => (
+            <li key={index}>{item.name}</li>
+          ))}
+        </ul>
+        <p>Total Amount: {calculateTotalAmount()}</p>
+        <button onClick={clearCart}>clear cart</button>
+      </div>
+
       {/* header div */}
       <div>
         {/* search bar */}
@@ -120,7 +158,11 @@ const Home = () => {
       {/* card div */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-4 lg:px-0 my-5 md:my-10">
         {filteredData.map((item) => (
-          <ProductCard key={item.id} item={item}></ProductCard>
+          <ProductCard
+            key={item.id}
+            item={item}
+            addToCart={addToCart}
+          ></ProductCard>
         ))}
       </div>
     </div>

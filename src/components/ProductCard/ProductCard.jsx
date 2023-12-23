@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item, addToCart }) => {
   return (
     <div className="p-4 border rounded-lg">
       <div
@@ -18,7 +18,10 @@ const ProductCard = ({ item }) => {
         <p className="text-sm capitalize text-gray-500">
           {item.brand} | {item.category}
         </p>
-        <button className="border border-indigo-700 bg-indigo-700 text-white px-6 py-2  rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold transition-all duration-300">
+        <button
+          onClick={() => addToCart(item)}
+          className="border border-indigo-700 bg-indigo-700 text-white px-6 py-2  rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold transition-all duration-300"
+        >
           Add To Cart
         </button>
       </div>
